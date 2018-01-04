@@ -1,2 +1,5 @@
-# scripts
-脚本集合
+## 脚本集合
+
+- shell
+- Python
+- DOS
