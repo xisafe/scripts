@@ -9,16 +9,16 @@ if [ ! -f /etc/sysconfig/iptables  ];then
 fi
 
 ###防火墙策略###
-iptables -A POSTROUTING -t nat -s 10.88.88.0/24 -o $wan -j MASQUERADE
-iptables -A FORWARD -s 10.88.88.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200
+iptables -I POSTROUTING -t nat -s 10.88.88.0/24 -o $wan -j MASQUERADE
+iptables -I FORWARD -s 10.88.88.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200
 #NAT路由、出接口进行MASQUERADE欺骗;设置分段数据大小
-iptables -A INPUT -p tcp --dport 1723 -j ACCEPT
+iptables -I INPUT -p tcp --dport 1723 -j ACCEPT
 #PPTPD端口放行
-iptables -A INPUT -p gre  -j ACCEPT
+iptables -I INPUT -p gre  -j ACCEPT
 #GRE端口打开
-iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+iptables -I INPUT -p tcp --dport 53 -j ACCEPT
 #允许DNS服务端口的tcp数据包流入
-iptables -A INPUT -p udp --dport 53 -j ACCEPT
+iptables -I INPUT -p udp --dport 53 -j ACCEPT
 #允许DNS服务端口的udp数据包流入
 echo 1 > /proc/sys/net/ipv4/ip_forward 
 grep  ip_forward  /etc/sysctl.conf &>/dev/null || echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
@@ -28,8 +28,8 @@ service iptables save &>/dev/null
 #保存iptable防火墙配置到本地
 
 ###安装pptpd服务###
-yum remove ppp  pptpd -y &>/dev/null
-yum install  ppp  pptpd -y &>/dev/null
+yum remove ppp  pptpd -y 
+yum install  dkms ppp  pptpd -y 
 #卸载和安装pptd服务
 
 echo localip 10.88.88.1 >>/etc/pptpd.conf

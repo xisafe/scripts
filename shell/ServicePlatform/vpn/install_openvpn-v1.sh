@@ -4,7 +4,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2017-12-22 22:23:03
+#Last Modified: 2018-01-14 13:03:50
 #Description:	
 # --------------------------------------------------
 
@@ -40,10 +40,11 @@ confirm
 #确认运行脚本
 
 
-yum install  gcc openssl-devel  -y
+yum install  gcc openssl-devel  git -y
 
 install_lzo ()
 {
+  cd /usr/local/src/
 	wget http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz && tar zxvf  lzo-2.06.tar.gz 
 	cd lzo-*
 	./configure --prefix=/usr/local/lzo
@@ -56,7 +57,9 @@ install_lzo ()
 
 install_openvpn ()
 {
-	tar zxvf openvpn-*tar.gz && cd  openvpn-*
+	#tar zxvf openvpn-*tar.gz && cd  openvpn-*
+ # git clone https://github.com/OpenVPN/openvpn.git
+  cd openvpn*
 	./configure --prefix=/usr/local/openvpn --with-lzo-lib=/usr/local/lzo/lib \
 	--with-lzo-headers=/usr/local/lzo/include
 	make && make install 

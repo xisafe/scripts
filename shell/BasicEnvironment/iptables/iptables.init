@@ -1,0 +1,97 @@
+#!/bin/bash
+# --------------------------------------------------
+#发布者:		以谁为师  
+#Email:			admin@attacker.club
+#网站:			www.attacker.club
+#更新时间: 		2016-07-05
+#Description:	Linux服务器初始化
+# --------------------------------------------------
+
+
+#############---- 安装iptables ----#############
+if [ ! -f /etc/sysconfig/iptables  ];then
+yum install  iptables-services -y
+#安装iptables防火墙
+
+chkconfig iptables on
+systemctl enable  iptables
+systemctl disable  firewalld
+#开机启动项
+systemctl stop  firewalld
+service iptables restart
+fi
+################################################
+
+
+###########---- 清空iptables策略 ----###########
+iptables -F
+#默认清空filter表
+iptables -t nat -F
+#清空nat表
+iptables -X
+iptables -t nat -X
+################################################
+
+
+##########################################---- INPUT链配置 ----#######################################
+iptables -P INPUT DROP
+#INPUT默认拒绝
+iptables -A INPUT -i lo -j ACCEPT
+#允许本地数据包
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#建立起来的链接保持允许
+iptables -A INPUT -p tcp -m multiport --dports 22,1194,10051,55555 -j ACCEPT
+#开放http、https、zabbix-agent服务
+
+#iptables -I INPUT  -p icmp -s 0/0 -d 0/0 -j ACCEPT   
+#全网段放行ICMP协议
+
+######################################################################################################
+
+
+
+
+################---- 安全类-SYN ----################
+iptables -N syn-flood
+iptables -A INPUT -p tcp --syn -j syn-flood
+iptables -I syn-flood -p tcp -m limit --limit 3/s --limit-burst 6 -j RETURN
+iptables -A syn-flood -j REJECT
+#防止SYN攻击 轻量
+sysctl -w net.ipv4.tcp_syncookies=1 &>/dev/null
+#打开 syncookie （轻量级预防 DOS 攻击）
+
+################---- 安全类-SSH ----################
+iptables -I INPUT -p tcp --dport 55555 -m connlimit --connlimit-above 3 -j DROP
+#利用connlimit模块将单IP的并发设置为3；会误杀使用NAT上网的用户，可以根据实际情况增大该值
+iptables -I INPUT -p tcp --dport 55555 -m state --state NEW -m recent --set --name SSH
+iptables -A INPUT -p tcp --dport 55555 -m state --state NEW -m recent --update --name SSH --second 300 --hitcount 3 -j LOG --log-prefix "SSH Attack "
+#recent和state模块限制单IP在300s内只能与本机建立3个新连接。被限制一分钟后即可恢复访问, 最后记录日志
+##################################################
+
+
+#iptables -A INPUT -p tcp -s 115.229.7.168  -j ACCEPT
+#放行白名单IP地址
+
+#vpn
+###防火墙策略###
+wan=$(route |grep default|awk '{print $8}')
+#出接口
+#iptables -A POSTROUTING -t nat -s 10.88.88.0/24 -o $wan -j MASQUERADE
+iptables -A POSTROUTING -t nat  -o $wan -j MASQUERADE
+iptables -A FORWARD -s 10.88.88.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200
+iptables -A FORWARD -s 10.8.0.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200
+#NAT路由、出接口进行MASQUERADE欺骗;设置分段数据大小
+iptables -A INPUT -p tcp --dport 1723 -j ACCEPT
+#PPTPD端口放行
+iptables -A INPUT -p gre  -j ACCEPT
+#GRE端口打开
+iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+#允许DNS服务端口的tcp数据包流入
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+#允许DNS服务端口的udp数据包流入
+echo 1 > /proc/sys/net/ipv4/ip_forward 
+grep  ip_forward  /etc/sysctl.conf &>/dev/null || echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+#开启NAT转发
+iptables-save &>/dev/null
+service iptables save &>/dev/null
+#保存iptable防火墙配置到本地

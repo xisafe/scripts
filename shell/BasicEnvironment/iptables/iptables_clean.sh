@@ -1,10 +1,13 @@
 #!/bin/bash
+
+####---- 清空iptables策略 ----####
 iptables -F
-#清空所有链
-iptables -t nat -F
-#清空nat表所有链
 iptables -X
-iptables -t nat -X
+iptables -Z
+iptables -F -t nat
+iptables -X -t nat
+iptables -Z -t nat
+
 
 
 ####---- INPUT链设置 ----####
