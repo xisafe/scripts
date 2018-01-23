@@ -5,7 +5,7 @@
 #Site:		    blog.attacker.club
 #Email:			admin@attacker.club
 
-#Last Modified time: 2018-01-18 17:57:01
+#Last Modified time: 2018-01-22 22:09:43
 #Description:   
 # --------------------------------------------------
 
@@ -16,7 +16,7 @@ import requests
 def getResponse(_info):
 	apiUrl = 'http://www.tuling123.com/openapi/api'
 	data = {
-	'key'    : '7c1ccc2786df4e1685dda9f7a98c4ec9', # 如果这个Tuling Key不能用，tuling123官网注册一个
+	'key'    : '86fc7031f14946dbbdca9a1f056aea99', # 如果这个Tuling Key不能用，tuling123官网注册一个
 	'info'   : _info, # 这是我们发出去的消息
     'userid' : 'wechat-robot', # 这里你想改什么都可以
          }

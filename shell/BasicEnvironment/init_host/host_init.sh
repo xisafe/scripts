@@ -4,9 +4,10 @@
 #Email:   admin@attacker.club
 #Site:    blog.attacker.club
 
-#Last Modified: 2018-01-01 21:39:12
+#Last Modified: 2018-01-23 00:19:14
 #Description: 
 # --------------------------------------------------
+
 
 function color_message()
 { 
@@ -20,11 +21,29 @@ function color_message()
   esac
 }
 
+function confirm()
+{
+  read -p 'Are you sure to Continue?[Y/n]:' answer
+  case $answer in
+  Y | y)
+        echo -e "\n\t\t\e[44;37m Running the script \e[0m\n";;
+  N | n)
+        echo -e "\n\t\t\033[41;36mExit the script \e[0m\n"  && exit 0;;
+  *)
+        echo -e "\n\t\t\033[41;36mError choice \e[0m\n"  && exit 1;;
+  esac
+}
+
+
+
+confirm
+
+
 
 Init_Install()
 {
   Yum_install
-  Set_hostname
+  Set_hostname $1
   Set_Selinux
   Set_iptables
   Centos_init
@@ -48,7 +67,7 @@ Yum_install ()
   openssl-perl ncurses-devel pcre-devel zlib zlib-devel unzip -y
   #base 
   yum install  nmap iotop sysstat iftop nload  net-tools lrzsz \
-  wget  vim-enhanced  mlocate  lsof   -y
+  wget  vim-enhanced  mlocate  lsof telnet   -y
   #tools
   yum install OpenIPMI OpenIPMI-devel OpenIPMI-tools OpenIPMI-libs -y
   #ipmi
@@ -62,15 +81,15 @@ Set_hostname()
     color_message  "warn"  "---- no set hostname ----"
     HOSTNAME="TemplateOS"
     #默认主机名TemplateOS
-    else
+  else
       HOSTNAME=$1
-    fi
+  fi
 
-    if [ -d /etc/hostname ];then
+  if [ -d /etc/hostname ];then
       echo "$HOSTNAME" > /etc/hostname
-    fi
-    sed -i "/HOSTNAME/c HOSTNAME=$HOSTNAME" /etc/sysconfig/network||echo "HOSTNAME=$HOSTNAME" >>/etc/sysconfig/network
-    hostname $HOSTNAME  
+  fi
+  sed -i "/HOSTNAME/c HOSTNAME=$HOSTNAME" /etc/sysconfig/network||echo "HOSTNAME=$HOSTNAME" >>/etc/sysconfig/network
+  hostname $HOSTNAME  
 }
 
 

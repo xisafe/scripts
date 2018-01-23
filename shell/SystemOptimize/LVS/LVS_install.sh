@@ -4,7 +4,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-19 10:19:17
+#Last Modified: 2018-01-22 22:09:43
 #Description:	
 # --------------------------------------------------
 
@@ -30,3 +30,11 @@ function color_message()
 
 
 
+### LVS-NAT 负载均衡(有瓶颈 NAT封包开销)
+grep  ip_forward  /etc/sysctl.conf || echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+/sbin/sysctl -p
+iptables -A POSTROUTING -t nat -j MASQUERADE
+iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200 
+
+
+#ipvsadmin
