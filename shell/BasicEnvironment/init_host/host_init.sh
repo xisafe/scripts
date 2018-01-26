@@ -4,7 +4,7 @@
 #Email:   admin@attacker.club
 #Site:    blog.attacker.club
 
-#Last Modified: 2018-01-23 00:19:14
+#Last Modified: 2018-01-25 15:05:05
 #Description: 
 # --------------------------------------------------
 
@@ -66,8 +66,8 @@ Yum_install ()
   yum install gcc gcc-c++   openssl-devel  ntpdate nfs-utils \
   openssl-perl ncurses-devel pcre-devel zlib zlib-devel unzip -y
   #base 
-  yum install  nmap iotop sysstat iftop nload  net-tools lrzsz \
-  wget  vim-enhanced  mlocate  lsof telnet   -y
+  yum install  nmap iotop sysstat iftop nload  iproute net-tools  \
+  lrzsz wget vim-enhanced  mlocate  lsof telnet   -y
   #tools
   yum install OpenIPMI OpenIPMI-devel OpenIPMI-tools OpenIPMI-libs -y
   #ipmi
