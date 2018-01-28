@@ -2,4 +2,4 @@
 
 - shell
 - Python
-- DOS
+- DOS/BAT
