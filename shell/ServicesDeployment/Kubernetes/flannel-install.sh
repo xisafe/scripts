@@ -5,7 +5,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-26 15:57:23
+#Last Modified: 2018-01-28 14:22:07
 #Description:	
 # --------------------------------------------------
 
@@ -49,28 +49,30 @@ confirm
 
 
 
-wan=$(route |grep default|awk '{print $8}')
-if [ -z $wan ];then
-  wan="eth0"
-fi
-ipaddr=`ifconfig  $wan |grep -vw lo |awk -F '[ /]+'  '/inet/ {print $3}'`
 
 
+read -p "请输入etcd集群ip地址，请输入：" etcdnode
+echo 
 
 
 Install_Flannel()
 {
   etcdctl -endpoint="$ipaddr" \
   set /coreos.com/network/config '{ "Network": "172.17.0.0/16", "Backend": {"Type": "vxlan"}}'
-
+  
   if [ -f flannel-*tar.gz ] ;then
     tar zxvf flannel-*tar.gz
     chown root:root flanneld mk-docker-opts.sh
     mv flanneld mk-docker-opts.sh /usr/bin
+  else
+    exit 1 && echo "no Flannelfile"
+
+  	
+
   fi
 
 cat > /etc/sysconfig/flanneld <<EOF
-FLANNEL_OPTIONS="--etcd-endpoints=http://$ipaddr:2379  --ip-masq=true"
+FLANNEL_OPTIONS="--etcd-endpoints=http://$etcdnode:2379  --ip-masq=true"
 EOF
 
 cat > /usr/lib/systemd/system/flanneld.service <<EOF
@@ -96,3 +98,7 @@ EOF
     systemctl start flanneld && systemctl restart docker
 
 }
+
+
+
+Install_Flannel
