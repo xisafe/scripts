@@ -4,7 +4,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-23 14:26:02
+#Last Modified: 2018-01-31 14:50:21
 #Description:	
 # --------------------------------------------------
 
@@ -39,29 +39,33 @@ function confirm()
 confirm
 
 
-Install_docker()
-{
+docker network create monitor
 
-  yum install -y yum-utils device-mapper-persistent-data lvm2
-  #安装依赖包
+#Influxdb
+docker run -d \
+--name influxdb \
+--net monitor \
+-p 8083:8083 \
+-p 8086:8086 \
+tutum/influxdb
 
-  yum-config-manager \
-  --add-repo \
-  https://download.docker.com/linux/centos/docker-ce.repo
-    # 添加Docker软件包源
+#cAdvisor
+docker run -d \
+--name=cadvisor \
+--net monitor \
+-p 8081:8080 \
+--mount type=bind,src=/,dst=/rootfs,ro \
+--mount type=bind,src=/var/run,dst=/var/run \
+--mount type=bind,src=/sys,dst=/sys,ro \
+--mount type=bind,src=/var/lib/docker/,dst=/var/lib/docker,ro \
+google/cadvisor \
+-storage_driver=influxdb \
+-storage_driver_db=cadvisor \
+-storage_driver_host=influxdb:8086
 
-  yum makecache fast
-  # 更新yum包索引
-  yum install docker-ce -y
-  # 安装Docker CE
-cat > /etc/docker/daemon.json <<EOF
-{
-  "registry-mirrors": [ "https://registry.docker-cn.com"]
-}
-EOF
-#设置默认从中国镜像仓库中拉取
-  systemctl start docker && systemctl enable docker
-
-}
-
-Install_docker
+#Grafana
+docker run -d \
+--name grafana \
+--net monitor \
+-p 3000:3000 \
+grafana/grafana

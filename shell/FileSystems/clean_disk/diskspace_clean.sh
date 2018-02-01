@@ -4,7 +4,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-18 17:43:41
+#Last Modified: 2018-01-28 22:08:33
 #Description:	
 # --------------------------------------------------
 
@@ -22,13 +22,5 @@ function color_message()
 }
 
 
-
-
-
-clean_file ()
-{
-	find /home/bt/bbdata/2018 -name  "*.dat" -mtime +3 -type f -print   -exec rm -f {}\ ;
-	color_message  "info" "删除旧文件"
-}
-
-clean_file
+find /home/bt/bbdata/2018 -name  "*.dat" -mtime +6 -type f -print   -exec rm -f {} \;
+color_message  "info" "删除7天旧文件"

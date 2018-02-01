@@ -4,8 +4,8 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-14 13:03:50
-#Description:	
+#Last Modified: 2018-01-31 18:09:14
+#Description:	 CentOS 6  install openvpn
 # --------------------------------------------------
 
 function color_message()
@@ -49,9 +49,6 @@ install_lzo ()
 	cd lzo-*
 	./configure --prefix=/usr/local/lzo
 	make &&make install && cd ..
-
-
-
 #lzo-devel
 }
 
@@ -168,4 +165,10 @@ source vars
 ./build-key client
 ./build-dh
 
-/usr/local/openvpn/sbin/openvpn   --config  /usr/local/openvpn/server.conf  &
+cd /usr/local/openvpn
+nohup /usr/local/openvpn/sbin/openvpn  --config /usr/local/openvpn/server.conf  &
+
+
+echo "1" > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING  -j MASQUERADE
+iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200 

@@ -4,7 +4,7 @@
 #Email:   admin@attacker.club
 #Site:    blog.attacker.club
 
-#Last Modified: 2018-01-25 15:05:05
+#Last Modified: 2018-01-31 22:27:59
 #Description: 
 # --------------------------------------------------
 
@@ -66,8 +66,8 @@ Yum_install ()
   yum install gcc gcc-c++   openssl-devel  ntpdate nfs-utils \
   openssl-perl ncurses-devel pcre-devel zlib zlib-devel unzip -y
   #base 
-  yum install  nmap iotop sysstat iftop nload  iproute net-tools  \
-  lrzsz wget vim-enhanced  mlocate  lsof telnet   -y
+  yum install  nmap iotop sysstat dstat iftop nload  iproute net-tools  \
+  lrzsz wget vim-enhanced  mlocate  lsof telnet  yum-utils  dmidecode -y
   #tools
   yum install OpenIPMI OpenIPMI-devel OpenIPMI-tools OpenIPMI-libs -y
   #ipmi
@@ -204,10 +204,11 @@ Set_dns()
 Set_timezone()
 {
   \cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+  dmidecode -s system-product-name|awk '{if($1!~"VMware")exit 1}' || hwclock -w
 }
 
 
-dmidecode -s system-product-name|awk '{if($1!~"VMware")exit 1}' || hwclock -w
+
 
 Set_ssh()
 {
@@ -266,8 +267,10 @@ sysctl -p
 
 
 
-Init_Install
+Init_Install $1
 #调用执行
 
-#echo "123456"|passwd --stdin "root" #修改密码
+#echo "tmp123456"|passwd --stdin "root" #修改密码
 echo "++++++++++++++++ END To Initialize Server  +++++++++++++++++"
+
+

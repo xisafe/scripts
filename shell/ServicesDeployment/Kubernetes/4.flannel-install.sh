@@ -5,7 +5,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-01-28 14:22:07
+#Last Modified: 2018-02-02 00:28:30
 #Description:	
 # --------------------------------------------------
 
@@ -57,8 +57,11 @@ echo
 
 Install_Flannel()
 {
-  etcdctl -endpoint="$ipaddr" \
-  set /coreos.com/network/config '{ "Network": "172.17.0.0/16", "Backend": {"Type": "vxlan"}}'
+	etcdctl --endpoints="https://192.168.0.10:2379,https://192.168.0.11:2379,https://192.168.0.12:2379" \
+	--ca-file=/opt/kubernetes/ssl/ca.pem \
+	--cert-file=/opt/kubernetes/ssl/server.pem \
+	--key-file=/opt/kubernetes/ssl/server-key.pem \
+	set /kube/network/config '{ "Network": "172.17.0.0/16", "Backend": {"Type": "vxlan"}}'
   
   if [ -f flannel-*tar.gz ] ;then
     tar zxvf flannel-*tar.gz
@@ -72,7 +75,7 @@ Install_Flannel()
   fi
 
 cat > /etc/sysconfig/flanneld <<EOF
-FLANNEL_OPTIONS="--etcd-endpoints=http://$etcdnode:2379  --ip-masq=true"
+FLANNEL_OPTIONS="--etcd-endpoints=http://http://192.168.0.10:2379,http://192.168.0.11:2379,http://192.168.0.12:2379  --ip-masq=true"
 EOF
 
 cat > /usr/lib/systemd/system/flanneld.service <<EOF
@@ -86,7 +89,7 @@ Before=docker.service
 [Service]
 Type=notify
 EnvironmentFile=/etc/sysconfig/flanneld
-ExecStart=/usr/bin/flanneld  $FLANNEL_OPTIONS
+ExecStart=/usr/bin/flanneld  \$FLANNEL_OPTIONS
 ExecStartPost=/usr/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/subnet.env
 Restart=on-failure
 
