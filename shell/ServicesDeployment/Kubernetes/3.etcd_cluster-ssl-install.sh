@@ -4,7 +4,7 @@
 #Email:		admin@attacker.club
 #Site:		blog.attacker.club
 
-#Last Modified: 2018-02-02 00:20:12
+#Last Modified: 2018-02-07 17:49:31
 #Description:	3节点：node1、node2、node3
 # --------------------------------------------------
 
@@ -161,7 +161,7 @@ cat > /etc/sysconfig/etcd <<EOF
 ETCD_NAME=$node
 ETCD_DATA_DIR="/data/etcd/defualt"
 ETCD_LISTEN_PEER_URLS="https://$ipaddr:2380"
-ETCD_LISTEN_CLIENT_URLS="https://$ipaddr:2379,http://127.0.0.1:2379"
+ETCD_LISTEN_CLIENT_URLS="https://$ipaddr:2379,https://127.0.0.1:2379"
 
 #[Clustering]
 ETCD_ADVERTISE_CLIENT_URLS="https://$ipaddr:2379"
