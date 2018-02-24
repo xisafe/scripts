@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------------------------
-#Author:		LJ
+#Author:    LJ
 #Email: admin@attacker.club
-#Site:  blog.attacker.club
+
 #Mail:  admin@attacker.club
 #Date:  2017/9/16
 #Description:   
@@ -19,7 +19,7 @@ from email.header import Header
 # 第三方 SMTP 服务
 mail_host="smtp.attacker.club"  #设置服务器
 mail_user="info@attacker.club"  #用户名
-mail_pass="ZXCVBNMP0-"           #密码
+mail_pass="*****"           #密码
 
 receivers = '2281121225@qq.com'  # 接收邮件
 
