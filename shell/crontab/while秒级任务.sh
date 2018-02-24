@@ -1,10 +1,10 @@
 #!/bin/bash
 # --------------------------------------------------
-#Author:	LGhost
+#Author:    LJ
 #Email:		admin@attacker.club
-#Site:		blog.attacker.club
 
-#Last Modified: 2017-12-15 23:17:15
+
+#Last Modified: 2018-02-24 18:03:40
 #Description:	 死循环秒级任务
 # --------------------------------------------------
 

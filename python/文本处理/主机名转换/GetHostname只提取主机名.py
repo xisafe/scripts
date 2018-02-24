@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------------------------
-#Author:		LGhost
+#Author:    LJ
 #Site:		    blog.attacker.club
 #Email:			admin@attacker.club
 

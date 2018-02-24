@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------------------------
-#Author:		LJ
+#Author:    LJ
 #Email: admin@attacker.club
-#Site:  blog.attacker.club
+
 #Mail:  admin@attacker.club
 #Date:  2018/1/18
 #Description:   

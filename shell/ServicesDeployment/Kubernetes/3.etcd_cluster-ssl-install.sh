@@ -1,10 +1,10 @@
 #!/bin/bash
 # --------------------------------------------------
-#Author:	LGhost
+#Author:    LJ
 #Email:		admin@attacker.club
-#Site:		blog.attacker.club
 
-#Last Modified: 2018-02-07 17:49:31
+
+#Last Modified: 2018-02-24 18:04:35
 #Description:	3节点：node1、node2、node3
 # --------------------------------------------------
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 # --------------------------------------------------
-#Author:  LGhost
+#Author:    LJ
 #Email:   admin@attacker.club
-#Site:    blog.attacker.club
 
-#Last Modified: 2017-12-26 17:50:12
+
+#Last Modified: 2018-02-24 18:04:38
 #Description: 
 # --------------------------------------------------
 

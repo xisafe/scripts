@@ -1,10 +1,10 @@
 #!/bin/bash
 # --------------------------------------------------
-#Author:	LGhost
+#Author:    LJ
 #Email:		admin@attacker.club
-#Site:		blog.attacker.club
 
-#Last Modified: 2018-01-31 18:09:14
+
+#Last Modified: 2018-02-24 18:04:31
 #Description:	 CentOS 6  install openvpn
 # --------------------------------------------------
 

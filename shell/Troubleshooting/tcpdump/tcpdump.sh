@@ -1,6 +1,6 @@
 #!/bin/bash
 # --------------------------------------------------
-#Author:		LGhost
+#Author:    LJ
 #Email:			admin@attacker.club
 #Site:		    blog.attacker.club
 
