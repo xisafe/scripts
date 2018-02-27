@@ -27,18 +27,20 @@ def ProgressBar(transferred, toBeTransferred,suffix=''):
 
 
 
-def Upload():
+def Doownload():
 
-    local_file = '/data/1G'
+
     remote_file = '/home/1G'
+    local_file = '/data/1G'
+
     t = paramiko.Transport((hostname, port))
     t.connect(username=username, password=password)
 
     sftp = paramiko.SFTPClient.from_transport(t)
-    sftp.put(local_file,remote_file,callback=ProgressBar)
+    sftp.get(remote_file,local_file,callback=ProgressBar)
     t.close()
 
-    print("\n"  "%s\t上传成功" % local_file)
+    print("\n"  "%s\t下载成功" % remote_file)
 
 
 
@@ -51,7 +53,7 @@ if __name__ == "__main__":
     password = input('输入密码：')
 
     hostname = '10.0.0.223'
-    Upload()
+    Doownload()
     sys.exit(0)
 
 
@@ -63,7 +65,7 @@ if __name__ == "__main__":
         if line:
             hosts.append(line)
             hostname = line
-            Upload()
+            Doownload()
             # 批量主机
 '''
 

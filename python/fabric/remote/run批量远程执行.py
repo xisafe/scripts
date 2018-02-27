@@ -9,8 +9,8 @@
 # --------------------------------------------------
 from fabric.api import env,run
 
-hosts = []
 
+hosts = []
 file = open('host.txt','r')
 for line in file.readlines():
     line = line.strip()
@@ -18,6 +18,7 @@ for line in file.readlines():
         hosts.append(line)
 file.close()
 #主机列表信息
+
 
 env.user = 'root'
 env.password = input('输入密码：')

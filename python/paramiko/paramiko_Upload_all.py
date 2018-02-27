@@ -26,19 +26,21 @@ def ProgressBar(transferred, toBeTransferred,suffix=''):
 
 
 
+def Upload_all():
 
-def Upload():
-
-    local_file = '/data/1G'
-    remote_file = '/home/1G'
+    local_dir = '/data/items/test'
+    remote_dir = '/data'
     t = paramiko.Transport((hostname, port))
     t.connect(username=username, password=password)
 
     sftp = paramiko.SFTPClient.from_transport(t)
-    sftp.put(local_file,remote_file,callback=ProgressBar)
+    files = os.listdir(local_dir)
+    for file in files:
+        sftp.put(os.path.join(local_dir, file),
+                 os.path.join(remote_dir, file),
+                 callback=ProgressBar)
+        print("\n"  "%s\t已上传" % file)
     t.close()
-
-    print("\n"  "%s\t上传成功" % local_file)
 
 
 
@@ -46,28 +48,15 @@ def Upload():
 
 if __name__ == "__main__":
 
-    port = 22
+    hostname = '10.0.0.223'
     username = 'root'
     password = input('输入密码：')
+    port = 22
 
-    hostname = '10.0.0.223'
-    Upload()
+
+    Upload_all()
+    #将本地目录下的文件全部上传到目标主机
     sys.exit(0)
-
-
-'''
-    file = open('host.txt', 'r')
-    hosts = []
-    for line in file.readlines():
-        line = line.strip()
-        if line:
-            hosts.append(line)
-            hostname = line
-            Upload()
-            # 批量主机
-'''
-
-
 
 
 
