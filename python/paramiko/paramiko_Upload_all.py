@@ -21,7 +21,7 @@ def ProgressBar(transferred, toBeTransferred,suffix=''):
     filled_len = int(round(bar_len * transferred/float(toBeTransferred)))
     percents = round(100.0 * transferred/float(toBeTransferred), 1)
     bar = '=' * filled_len + '-' * (bar_len - filled_len)
-    sys.stdout.write(' [%s]%s%s ...%s\r' % (bar,percents,'%',suffix))
+    sys.stdout.write('[%s]%s%s ...%s\r' % (bar,percents,'%',suffix))
     sys.stdout.flush()
 
 

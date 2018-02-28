@@ -2,8 +2,8 @@
 # -*- coding:UTF-8 -*-
 # Author Lj
 # Mail:admin@attacker.club
-# blog:blog.attacker.club
-# description SSH change route
+
+# description SSH change route (python2.7)
 import time, sys, os, re
 import paramiko
 import logging
@@ -11,7 +11,7 @@ import logging.handlers
 
 # import pickle   #存用户名密码
 FW_ADDR = "192.168.120.1"
-FW_PASSWD = input('输入密码')
+FW_PASSWD = raw_input("请输入密码:")
 
 
 OUT_ADDR = {
@@ -45,7 +45,7 @@ def sshclient(host, passwd, cmd):
 
 if __name__ == "__main__":
     #passwd = raw_input("请输入密码:")
-    num = input("1.BGP线路\n2.电信线路\n其他任意键打印路由表:\t")
+    num = raw_input("1.BGP线路\n2.电信线路\n其他任意键打印路由表:\t"))
 
 
     if num == '1' :
