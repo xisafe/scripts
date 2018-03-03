@@ -8,7 +8,7 @@
 #Description:
 # --------------------------------------------------
 
-from fabric.api import env,put,get,prompt
+from fabric.api import env,put,get,prompt,runs_once,task
 
 
 '''
