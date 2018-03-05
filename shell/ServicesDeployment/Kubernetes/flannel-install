@@ -1,11 +1,7 @@
-
-#!/bin/bash
-# --------------------------------------------------
-#Author:    LJ
 #Email:		admin@attacker.club
+#Site:		blog.attacker.club
 
-
-#Last Modified: 2018-02-24 18:04:35
+#Last Modified: 2018-01-28 14:22:07
 #Description:	
 # --------------------------------------------------
 
@@ -57,8 +53,8 @@ echo
 
 Install_Flannel()
 {
-	etcdctl --endpoints="http://10.4.230.201:2379,http://10.4.230.202:2379,http://10.4.230.203:2379" \
-	set /kube/network/config '{ "Network": "172.17.0.0/16", "Backend": {"Type": "vxlan"}}'
+  etcdctl -endpoint="$ipaddr" \
+  set /coreos.com/network/config '{ "Network": "172.17.0.0/16", "Backend": {"Type": "vxlan"}}'
   
   if [ -f flannel-*tar.gz ] ;then
     tar zxvf flannel-*tar.gz
@@ -72,7 +68,7 @@ Install_Flannel()
   fi
 
 cat > /etc/sysconfig/flanneld <<EOF
-FLANNEL_OPTIONS="--etcd-endpoints=http://10.4.230.201:2379,http://10.4.230.202:2379,http://10.4.230.203:2379  --ip-masq=true"
+FLANNEL_OPTIONS="--etcd-endpoints=http://$etcdnode:2379  --ip-masq=true"
 EOF
 
 cat > /usr/lib/systemd/system/flanneld.service <<EOF
@@ -86,7 +82,7 @@ Before=docker.service
 [Service]
 Type=notify
 EnvironmentFile=/etc/sysconfig/flanneld
-ExecStart=/usr/bin/flanneld  \$FLANNEL_OPTIONS
+ExecStart=/usr/bin/flanneld  $FLANNEL_OPTIONS
 ExecStartPost=/usr/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/subnet.env
 Restart=on-failure
 

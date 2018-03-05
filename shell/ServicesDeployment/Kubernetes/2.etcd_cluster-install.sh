@@ -160,15 +160,15 @@ Install_etcd()
 cat > /etc/sysconfig/etcd <<EOF
 ETCD_NAME=$node
 ETCD_DATA_DIR="/data/etcd/defualt"
-ETCD_LISTEN_PEER_URLS="https://$ipaddr:2380"
-ETCD_LISTEN_CLIENT_URLS="https://$ipaddr:2379,https://127.0.0.1:2379"
+ETCD_LISTEN_PEER_URLS="http://$ipaddr:2380"
+ETCD_LISTEN_CLIENT_URLS="http://$ipaddr:2379,http://127.0.0.1:2379"
 
 #[Clustering]
-ETCD_ADVERTISE_CLIENT_URLS="https://$ipaddr:2379"
-ETCD_INITIAL_ADVERTISE_PEER_URLS="https://$ipaddr:2380"
+ETCD_ADVERTISE_CLIENT_URLS="http://$ipaddr:2379"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://$ipaddr:2380"
 ETCD_INITIAL_CLUSTER_STATE="new"
 ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster1"
-ETCD_INITIAL_CLUSTER="node1=https://$node1ip:2380,node2=https://$node2ip:2380,node3=https://$node3ip:2380"
+ETCD_INITIAL_CLUSTER="node1=http://$node1ip:2380,node2=http://$node2ip:2380,node3=http://$node3ip:2380"
 EOF
 
 cat > /usr/lib/systemd/system/etcd.service <<EOF
@@ -193,14 +193,7 @@ ExecStart=/usr/bin/etcd \\
 --initial-advertise-peer-urls=\${ETCD_INITIAL_ADVERTISE_PEER_URLS} \\
 --initial-cluster=\${ETCD_INITIAL_CLUSTER} \\
 --initial-cluster-token=\${ETCD_INITIAL_CLUSTER} \\
---initial-cluster-state=\${ETCD_INITIAL_CLUSTER_STATE} \\
---cert-file=/opt/kubernetes/ssl/server.pem \\
---key-file=/opt/kubernetes/ssl/server-key.pem \\
---peer-cert-file=/opt/kubernetes/ssl/server.pem \\
---peer-key-file=/opt/kubernetes/ssl/server-key.pem \\
---trusted-ca-file=/opt/kubernetes/ssl/ca.pem \\
---peer-trusted-ca-file=/opt/kubernetes/ssl/ca.pem
-
+--initial-cluster-state=\${ETCD_INITIAL_CLUSTER_STATE} 
 
 Restart=on-failure
 LimitNOFILE=65536
