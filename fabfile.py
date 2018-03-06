@@ -1,7 +1,7 @@
 from fabric.api import local, lcd
 import time
 
-version=time.strftime("%Y%m%d")+"update"
+version=time.strftime("%Y%m%d %H:%M:%S")+"update"
 
 
 
