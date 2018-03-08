@@ -1,0 +1,6 @@
+sys
+dis cur  | i route-static
+vlan 200
+int vlan 200
+ip add 172.16.110.1 24
+save

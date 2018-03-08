@@ -1,0 +1,4 @@
+[3-5-5-fw-1-1]  vlan 200
+[3-5-5-fw-1-1-vlan200 ] int vlan 200
+[3-5-5-fw-1-1-Vlan-interface200]  undo ip add 172.16.110.1 24
+[3-5-5-fw-1-1-Vlan-interface200]  quit

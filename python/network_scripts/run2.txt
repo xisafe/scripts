@@ -1,0 +1,9 @@
+sys
+vlan 200
+int vlan 200
+undo ip add 172.16.110.1 24
+quit
+undo int vlan 200
+undo vlan 200
+dis cur  | i route-static
+save
