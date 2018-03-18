@@ -34,7 +34,7 @@ def input_raw():
 @task
 def upload():
     env.password = input_raw()
-    put("/data//host.txt","/home/")
+    put("/data/host.txt","/home/")
     #上传文件：本地目录,远程目录
 
 @task
@@ -42,3 +42,8 @@ def download():
     env.password = input_raw()
     get("/home/*","/home/logos/hehe")
     #下载文件： 远程目录,本地目录
+
+
+
+
+

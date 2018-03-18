@@ -4,7 +4,7 @@
 #Email:   admin@attacker.club
 #Site:    blog.attacker.club
 
-#Last Modified: 2018-01-31 22:27:59
+#Last Modified: 2018-03-18 11:13:34
 #Description: 
 # --------------------------------------------------
 
@@ -47,7 +47,7 @@ Init_Install()
   Set_Selinux
   Set_iptables
   Centos_init
-  #Set_IP
+  Set_IP
   Set_dns
   Set_ssh
   Set_limits
@@ -69,8 +69,8 @@ Yum_install ()
   yum install  nmap iotop sysstat dstat iftop nload  iproute net-tools  \
   lrzsz wget vim-enhanced  mlocate  lsof telnet  yum-utils  dmidecode -y
   #tools
-  yum install OpenIPMI OpenIPMI-devel OpenIPMI-tools OpenIPMI-libs -y
-  #ipmi
+  #yum install OpenIPMI OpenIPMI-devel OpenIPMI-tools OpenIPMI-libs -y
+  #物理机ipmi
 }
 
 Set_hostname()
@@ -85,7 +85,7 @@ Set_hostname()
       HOSTNAME=$1
   fi
 
-  if [ -d /etc/hostname ];then
+  if [ -f /etc/hostname ];then
       echo "$HOSTNAME" > /etc/hostname
   fi
   sed -i "/HOSTNAME/c HOSTNAME=$HOSTNAME" /etc/sysconfig/network||echo "HOSTNAME=$HOSTNAME" >>/etc/sysconfig/network
@@ -150,47 +150,26 @@ Set_IP()
   #外网出接口
   IPADDR=`ifconfig $WAN |grep inet|awk '{print $2}'`
   NETMASK=`ifconfig $WAN |grep inet|awk '{print $4}'`
-  GATEWAY=`route |grep default| awk '{print $2}'`
+  GATEWAY=`route -n |grep ^0.0.0.0 |awk '{print $2}'`
   HWADDR=`ifconfig  $WAN  | awk '/ether/ {print "HWADDR="$2}'` 
   interface=`ifconfig -a |grep mtu|grep -v $WAN|grep -v lo|awk -F: '{print $1}'`
   ifcfg="/etc/sysconfig/network-scripts/ifcfg-eth"
 
-
-
-mv  /etc/sysconfig/network-scripts/ifcfg-$WAN  ${ifcfg}0
+mv  ${ifcfg}-$WAN  ${ifcfg}0
 cat > ${ifcfg}0 <<EOF
+#version1
 DEVICE=eth0
-BOOTPROTO=dhcp
+BOOTPROTO=none
 ONBOOT=yes
 USERCTL=no
 NM_CONTROLLED=no
 MTU=1454
+
+IPADDR=$IPADDR
+NETMASK=$NETMASK
+GATEWAY=$GATEWAY
+$HWADDR
 EOF
-
-if [ ! -z $IPADDR ];then  #变量值非空
-  num=0 #计数
-  for i in $interface
-  #接口列表循环
-  do
-    let  num=$num+1
-
-    mv  /etc/sysconfig/network-scripts/ifcfg-$i ${ifcfg}$num
-    cat  ${ifcfg}0 > ${ifcfg}$num
-    sed -i "s/eth0/eth$num/" ${ifcfg}$num
-    echo `ifconfig  $i  | awk '/ether/ {print "HWADDR="$2}'` >> ${ifcfg}$num
-    #除网卡1其他都自动获取地址
-  done
-fi
-
-if [ ! -z $IPADDR ]; then   
-  sed -i "s/dhcp/static/"  ${ifcfg}0
-  echo "IPADDR=$IPADDR" >>  ${ifcfg}0
-  echo "NETMASK=$NETMASK" >>  ${ifcfg}0
-  echo "GATEWAY=$GATEWAY" >>  ${ifcfg}0
-  echo "$HWADDR" >>  ${ifcfg}0
-  #给网卡1配置静态地址
-fi  
-
 }
 
 
@@ -267,10 +246,10 @@ sysctl -p
 
 
 
-Init_Install $1
+Init_Install $1 
 #调用执行
 
 #echo "tmp123456"|passwd --stdin "root" #修改密码
 echo "++++++++++++++++ END To Initialize Server  +++++++++++++++++"
 
-
+reboot

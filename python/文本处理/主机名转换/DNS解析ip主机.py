@@ -39,13 +39,12 @@ for i in HostFile:
         r = re.match(r'(\w+)-(\d+-\d+)',i).groups()
         host = i.strip() #主机名
         hostdomain = r[1] + "." + r[0] #域名
-        ipadd = Domain_ip(hostdomain) #dns解析地址
-        #print (type(ipadd)) #dns返回的数据类型
-        #print (host,ipadd) #打印主机名和ip地址
-        print (hostdomain)
-        if ipadd is not None:
-            file ('hostname.txt','a',host +'\t'+ hostdomain +'\t' + ipadd +'\n')
-            #主机列表写入文件
-        #else:
-        #    file ('error.txt','a',host +'\t'+ ipadd  +'\n')
-            #解析失败的写入文件
+        ipaddr = Domain_ip(hostdomain) #dns解析地址
+    
+        print (ipaddr) #打印主机名和ip地址
+
+
+        if ipaddr is not None:
+            file ('hostname.txt','a',host +'\t' +'\t' + ipaddr +'\n')
+            #写入文件
+ 

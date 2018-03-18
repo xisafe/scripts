@@ -15,6 +15,8 @@ from fabric.context_managers import *
 from fabric.contrib.console import confirm
 import time
 
+
+
 env.user='root'
 env.hosts=['192.168.1.21','192.168.1.22']
 env.password='SKJh935yft#'
