@@ -3,7 +3,7 @@
 #Author:  LJ
 #Email:   admin@attacker.club
 
-#Last Modified: 2018-03-18 22:39:54
+#Last Modified: 2018-03-18 22:43:53
 #Description: 
 # --------------------------------------------------
 
@@ -14,6 +14,6 @@ HWADDR=`ifconfig  -a  | awk '/ether/ {print "HWADDR="$2}'`
 grep $HWADDR ${ifcfg}eth0
 if [ $? = 1 ];then
 	sed -i '/HWADDR/d' ${ifcfg}eth0
-    sed -i  "\$a $HWADDR"  ${ifcfg}eth0
+	sed -i  "\$a $HWADDR"  ${ifcfg}eth0
 	rm -f ${ifcfg}$(interface) && reboot
 fi
