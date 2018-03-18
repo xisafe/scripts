@@ -3,9 +3,11 @@
 #Author:  LJ
 #Email:   admin@attacker.club
 
-#Last Modified: 2018-03-18 22:43:53
+#Last Modified: 2018-03-18 22:50:51
 #Description: 
 # --------------------------------------------------
+
+# wget -cP /etc/init.d/    https://raw.githubusercontent.com/L00J/scripts/master/shell/Network/centos7_net.sh
 
 
 ifcfg="/etc/sysconfig/network-scripts/ifcfg-"
@@ -17,3 +19,4 @@ if [ $? = 1 ];then
 	sed -i  "\$a $HWADDR"  ${ifcfg}eth0
 	rm -f ${ifcfg}$(interface) && reboot
 fi
+
