@@ -10,16 +10,6 @@
 
 
 
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# --------------------------------------------------
-#Author:    LJ
-#Email:     admin@attacker.club
-
-#Date:      18-3-12
-#Description:
-# --------------------------------------------------
-
 #   python  diff-db.py
 
 import os,sys,pymysql,re
